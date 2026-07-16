@@ -26,7 +26,7 @@ import {
   WHY_US_DATA, 
   TEAM_DATA 
 } from "./data";
-const heroVideoSrc = "assets/hero.mp4";
+const heroVideoSrc = "/assets/hero.mp4";
 
 export default function App() {
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -903,7 +903,7 @@ export default function App() {
        <div className="flex items-center">
   <a href="#hero" className="flex items-center">
   <img
-  src="assets/logo.png"
+  src="/assets/logo.png"
   alt="RewardsOnClick"
   className="h-20 md:h-24 w-auto object-contain"
 />
@@ -1811,7 +1811,7 @@ export default function App() {
   <div className="overflow-hidden rounded-3xl border border-[#F0E2E0] shadow-lg bg-white">
 
     <img
-      src="assets/team-photo.jpg"
+      src="/assets/team-photo.jpg"
       alt="RewardsOnClick Team"
       className="w-full h-auto object-cover"
     />
