@@ -108,42 +108,8 @@ export const TEAM_DATA: TeamGroup[] = [
     members: [
       { name: "Agrim Kalra", role: "Marketing Head", initials: "AK", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&h=256&q=80" }
     ]
-  },
-  {
-    department: "People & Finance",
-    members: [
-      { name: "Sakshi", role: "HR", initials: "S", avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Rupinder", role: "Accounts – TL", initials: "R", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&h=256&q=80" }
-    ]
-  },
-  {
-    department: "Client Servicing",
-    members: [
-      { name: "Prabal", role: "Executive", initials: "P", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Bidhi", role: "Executive", initials: "B", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&h=256&q=80" }
-    ]
-  },
-  {
-    department: "Operations",
-    members: [
-      { name: "Sapna", role: "Operations Executive", initials: "Sa", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Khushi", role: "Operations Executive", initials: "K", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Jyoti", role: "Operations Executive", initials: "J", avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=256&h=256&q=80" }
-    ]
-  },
-  {
-    department: "Techno-Sales",
-    members: [
-      { name: "Avneesh Mishra", role: "Techno Sales Engineer", initials: "AM", avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Anil Kumar", role: "Techno Sales Engineer", initials: "AK", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&h=256&q=80" }
-    ]
-  },
-  {
-    department: "Office & Administration",
-    members: [
-      { name: "Kirpa Shankar", role: "Office Executive", initials: "KS", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Adarsh", role: "Office Executive", initials: "A", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=256&h=256&q=80" },
-      { name: "Aasha", role: "Office Executive", initials: "Aa", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=256&h=256&q=80" }
-    ]
   }
+
+ 
+  
 ];
