@@ -124,6 +124,7 @@ export default function App() {
     });
 
     let rafId: number;
+    let teamCycleTl: any = null;
     function raf(time: number) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
@@ -505,31 +506,66 @@ export default function App() {
       }
 
       // Team cards: scale pulse on arrival
-      const teamCards = document.querySelectorAll('.reveal-team');
-      if (teamCards.length > 0) {
-        gsap.set(teamCards, { opacity: 0, y: 40, scale: 0.9 });
-        ScrollTrigger.batch(teamCards, {
-          start: 'top 88%',
-          onEnter: (batch: any) => {
-            const tl = gsap.timeline();
-            tl.to(batch, {
-              opacity: 1,
-              y: 0,
-              scale: 1.03,
-              duration: 0.5,
-              ease: 'power2.out',
-              stagger: 0.25
-            }).to(batch, {
-              scale: 1,
-              duration: 0.3,
-              ease: 'power2.inOut',
-              stagger: 0.25
-            }, "-=0.3");
-          },
-          once: true
-        });
-      }
+      // Team cards: continuous stacking "deck" carousel
+const stackCards = gsap.utils.toArray('.reveal-team-stack') as any[];
+if (stackCards.length > 0) {
+  const total = stackCards.length;
 
+  const restState = (depth: number, side: number) => ({
+    x: depth === 0 ? 0 : side * (6 + depth * 4),
+    y: -12 * depth,
+    scale: 1 - 0.04 * depth,
+    rotate: depth === 0 ? 0 : side * (3 + depth * 1.5),
+    opacity: depth === 0 ? 1 : 1 - depth * 0.08
+  });
+
+  gsap.set(stackCards, { opacity: 0, x: 0, y: 90, scale: 0.85, rotate: 0 });
+
+  ScrollTrigger.create({
+    trigger: '.team-stack-wrap',
+    start: 'top 80%',
+    once: true,
+    onEnter: () => {
+      const entrance = gsap.timeline({
+        onComplete: () => {
+          let order = Array.from({ length: total }, (_, d) => (total - 1) - d);
+
+          teamCycleTl = gsap.timeline({ repeat: -1, repeatDelay: 1.6, delay: 1.6 });
+          teamCycleTl.add(() => {
+            const frontIdx = order.shift() as number;
+            order.push(frontIdx);
+
+            order.forEach((cardIdx, depth) => {
+              const card = stackCards[cardIdx];
+              const side = cardIdx % 2 === 0 ? -1 : 1;
+              gsap.set(card, { zIndex: 10 + (total - depth) });
+              gsap.to(card, {
+                ...restState(depth, side),
+                duration: 0.8,
+                ease: depth === 0 ? 'back.out(1.3)' : 'power2.inOut'
+              });
+            });
+          });
+        }
+      });
+
+      stackCards.forEach((card: any, i: number) => {
+        entrance.to(card, {
+          x: 0, y: 0, scale: 1, rotate: 0, opacity: 1,
+          duration: 0.55, ease: 'back.out(1.5)'
+        }, i === 0 ? 0 : '+=0.15');
+
+        const depth = (total - 1) - i;
+        const side = i % 2 === 0 ? -1 : 1;
+        entrance.to(card, {
+          ...restState(depth, side),
+          duration: 0.5,
+          ease: 'power2.inOut'
+        }, '+=0.35');
+      });
+    }
+  });
+}
       // Steps (How It Works / Execution Method): sequential sliding-in animation & continuous floating/breathing
       const stepCardsReveal = document.querySelectorAll('.reveal-step');
       stepCardsReveal.forEach((card, i) => {
@@ -1606,8 +1642,7 @@ export default function App() {
       </section>
 
 
-      {/* 9. Meet the Team (Continuous Double Marquee) */}
-     {/* 9. Meet the Team - Sequential Reveal Grid */}
+     {/* 9. Meet the Team - Stacking Card Deck Reveal */}
 <section 
   id="team" 
   className="reveal-container py-24 md:py-32 bg-white relative overflow-hidden"
@@ -1627,65 +1662,65 @@ export default function App() {
     </p>
   </div>
 
-  <div className="max-w-5xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-    <div className="flex flex-wrap justify-center gap-8">
-      {TEAM_DATA.flatMap((group) =>
-        group.members.map((m) => ({ ...m, department: group.department }))
-      ).map((member) => {
-        const isLeadership = member.department === "Leadership";
-        return (
-          <div
-            key={member.name}
-            className="reveal-team tilt-small w-[280px] sm:w-[320px] flex-shrink-0 p-6 spotlight-card rounded-2xl border border-border bg-white text-center relative flex flex-col items-center justify-between h-[350px] sm:h-[380px] select-none transition-all duration-300 hover:border-[#C41E3A]/30 hover:shadow-xl cursor-pointer"
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const x = e.clientX - rect.left;
-              const y = e.clientY - rect.top;
-              e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-              e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
-            }}
-          >
-            <div className="flex flex-col items-center w-full">
-              <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-4 border-2 border-[#F0E2E0] shadow-md relative group/img bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
-                <img
-                  src={member.avatar}
-                  alt={member.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <h4 className="text-base sm:text-lg font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
-                {member.name}
-              </h4>
-              <p className="text-xs sm:text-sm text-[#5A5252] font-body line-clamp-1">
-                {member.role}
-              </p>
+  <div className="team-stack-wrap relative mx-auto w-[280px] h-[350px] sm:w-[320px] sm:h-[380px] pt-4 z-10">
+    {TEAM_DATA.flatMap((group) =>
+      group.members.map((m) => ({ ...m, department: group.department }))
+    ).map((member, i) => {
+      const isLeadership = member.department === "Leadership";
+      return (
+        <div
+          key={member.name}
+          data-stack-index={i}
+          style={{ zIndex: 10 + i }}
+          className="reveal-team-stack tilt-small spotlight-card absolute inset-0 p-6 rounded-2xl border border-border bg-white text-center flex flex-col items-center justify-between select-none cursor-pointer"
+          onMouseMove={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+            e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+          }}
+        >
+          <div className="flex flex-col items-center w-full">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-4 border-2 border-[#F0E2E0] shadow-md relative group/img bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
+              <img
+                src={member.avatar}
+                alt={member.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
+                referrerPolicy="no-referrer"
+              />
             </div>
-            <div className="mt-2 w-full flex flex-col items-center gap-1.5">
-              <span className={`text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full ${
-                isLeadership
-                  ? "text-[#C9A24B] bg-[#C9A24B]/10 border border-[#C9A24B]/20"
-                  : "text-[#C41E3A] bg-[#FCEAEC]"
-              }`}>
-                {member.department}
-              </span>
-              {isLeadership && (
-                <div className="flex items-center gap-1 text-[10px] text-[#C9A24B] font-semibold">
-                  <Award className="w-3 h-3" />
-                  <span>Executive Director</span>
-                </div>
-              )}
-            </div>
+            <h4 className="text-base sm:text-lg font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
+              {member.name}
+            </h4>
+            <p className="text-xs sm:text-sm text-[#5A5252] font-body line-clamp-1">
+              {member.role}
+            </p>
           </div>
-        );
-      })}
-    </div>
+          <div className="mt-2 w-full flex flex-col items-center gap-1.5">
+            <span className={`text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full ${
+              isLeadership
+                ? "text-[#C9A24B] bg-[#C9A24B]/10 border border-[#C9A24B]/20"
+                : "text-[#C41E3A] bg-[#FCEAEC]"
+            }`}>
+              {member.department}
+            </span>
+            {isLeadership && (
+              <div className="flex items-center gap-1 text-[10px] text-[#C9A24B] font-semibold">
+                <Award className="w-3 h-3" />
+                <span>Executive Director</span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    })}
   </div>
 
   <div className="reveal mt-12 text-center relative z-10">
     <p className="text-xs text-[#5A5252]/60 font-body inline-flex items-center gap-1.5 bg-[#FBF6F5] px-4 py-2 rounded-full border border-[#F0E2E0]">
       <Sparkles className="w-3.5 h-3.5 text-[#C9A24B] animate-pulse" />
-      Scroll into view to meet the team
+      Hover the front card to see it tilt and glow
     </p>
   </div>
 </section>
