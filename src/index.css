@@ -261,6 +261,11 @@
 .spotlight-card:hover::after {
   opacity: 1;
 }
+/* Force absolute positioning for the stacking team deck — spotlight-card's
+   own "position: relative" would otherwise win and break the stack */
+.reveal-team-stack.spotlight-card {
+  position: absolute !important;
+}
 
 /* Card hover micro-interactions */
 .hover-card {
