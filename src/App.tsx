@@ -518,12 +518,12 @@ export default function App() {
               scale: 1.03,
               duration: 0.5,
               ease: 'power2.out',
-              stagger: 0.05
+              stagger: 0.25
             }).to(batch, {
               scale: 1,
               duration: 0.3,
               ease: 'power2.inOut',
-              stagger: 0.05
+              stagger: 0.25
             }, "-=0.3");
           },
           once: true
@@ -1607,186 +1607,88 @@ export default function App() {
 
 
       {/* 9. Meet the Team (Continuous Double Marquee) */}
-      <section 
-        id="team" 
-        className="reveal-container py-24 md:py-32 bg-white relative overflow-hidden"
-      >
-        {/* Background ambient blur decorations */}
-        <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] bg-gradient-to-br from-[#FCEAEC] to-transparent rounded-full filter blur-[80px] pointer-events-none opacity-60"></div>
-        <div className="absolute bottom-[20%] right-[-10%] w-[400px] h-[400px] bg-gradient-to-br from-[#C9A24B]/5 to-transparent rounded-full filter blur-[80px] pointer-events-none opacity-60"></div>
+     {/* 9. Meet the Team - Sequential Reveal Grid */}
+<section 
+  id="team" 
+  className="reveal-container py-24 md:py-32 bg-white relative overflow-hidden"
+>
+  <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] bg-gradient-to-br from-[#FCEAEC] to-transparent rounded-full filter blur-[80px] pointer-events-none opacity-60"></div>
+  <div className="absolute bottom-[20%] right-[-10%] w-[400px] h-[400px] bg-gradient-to-br from-[#C9A24B]/5 to-transparent rounded-full filter blur-[80px] pointer-events-none opacity-60"></div>
 
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-16 text-center">
-          <span className="reveal text-[#C41E3A] text-sm uppercase font-extrabold tracking-widest block mb-4">
-            Organizational DNA
-          </span>
-          <h2 className="reveal text-4xl md:text-5xl font-heading text-[#1A1414] mb-6 max-w-xl mx-auto">
-            Meet the minds behind RewardsOnClick
-          </h2>
-          <p className="reveal text-[#5A5252] text-lg max-w-lg mx-auto font-body">
-            A dedicated team of technology, operation, and corporate servicing experts committed to your scale.
-          </p>
-        </div>
+  <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-16 text-center relative z-10">
+    <span className="reveal text-[#C41E3A] text-sm uppercase font-extrabold tracking-widest block mb-4">
+      Organizational DNA
+    </span>
+    <h2 className="reveal text-4xl md:text-5xl font-heading text-[#1A1414] mb-6 max-w-xl mx-auto">
+      Meet the minds behind RewardsOnClick
+    </h2>
+    <p className="reveal text-[#5A5252] text-lg max-w-lg mx-auto font-body">
+      A dedicated team of technology, operation, and corporate servicing experts committed to your scale.
+    </p>
+  </div>
 
-        {/* Double Row Marquee Wrapper */}
-        <div className="team-marquee-container flex flex-col gap-8 w-full relative z-10">
-          
-          {/* Row 1 - Left Scrolling */}
-          <div className="team-marquee-wrapper">
-            <div className="team-marquee-track-left">
-              {(() => {
-                const allTeamMembers = TEAM_DATA.flatMap((group) =>
-                  group.members.map((m) => ({
-                    ...m,
-                    department: group.department,
-                  }))
-                );
-                const midPoint = Math.ceil(allTeamMembers.length / 2);
-                const row1Members = allTeamMembers.slice(0, midPoint);
-                const duplicatedRow1 = [...row1Members, ...row1Members];
-
-                return duplicatedRow1.map((member, i) => {
-                  const isLeadership = member.department === "Leadership";
-                  return (
-                    <div 
-                      key={`row1-${i}`}
-                      className="reveal-team tilt-small w-[280px] sm:w-[320px] flex-shrink-0 p-6 spotlight-card rounded-2xl border border-border bg-white text-center relative flex flex-col items-center justify-between h-[350px] sm:h-[380px] select-none transition-all duration-300 hover:border-[#C41E3A]/30 hover:shadow-xl cursor-pointer"
-                      onMouseMove={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-                        e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
-                      }}
-                    >
-                      {/* Avatar & Info Content */}
-                      <div className="flex flex-col items-center w-full">
-                        {/* Elegant avatar frame with border and zoom effect */}
-                        <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-4 border-2 border-[#F0E2E0] shadow-md relative group/img bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
-                          <img 
-                            src={member.avatar} 
-                            alt={member.name} 
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
-                            referrerPolicy="no-referrer"
-                          />
-                        </div>
-
-                        {/* Name and Role */}
-                        <h4 className="text-base sm:text-lg font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
-                          {member.name}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-[#5A5252] font-body line-clamp-1">
-                          {member.role}
-                        </p>
-                      </div>
-
-                      {/* Department Badge and Leadership marker */}
-                      <div className="mt-2 w-full flex flex-col items-center gap-1.5">
-                        <span className={`text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full ${
-                          isLeadership
-                            ? "text-[#C9A24B] bg-[#C9A24B]/10 border border-[#C9A24B]/20"
-                            : "text-[#C41E3A] bg-[#FCEAEC]"
-                        }`}>
-                          {member.department}
-                        </span>
-
-                        {isLeadership && (
-                          <div className="flex items-center gap-1 text-[10px] text-[#C9A24B] font-semibold">
-                            <Award className="w-3 h-3" />
-                            <span>Executive Director</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
+  <div className="max-w-5xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+    <div className="flex flex-wrap justify-center gap-8">
+      {TEAM_DATA.flatMap((group) =>
+        group.members.map((m) => ({ ...m, department: group.department }))
+      ).map((member) => {
+        const isLeadership = member.department === "Leadership";
+        return (
+          <div
+            key={member.name}
+            className="reveal-team tilt-small w-[280px] sm:w-[320px] flex-shrink-0 p-6 spotlight-card rounded-2xl border border-border bg-white text-center relative flex flex-col items-center justify-between h-[350px] sm:h-[380px] select-none transition-all duration-300 hover:border-[#C41E3A]/30 hover:shadow-xl cursor-pointer"
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+              e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+            }}
+          >
+            <div className="flex flex-col items-center w-full">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-4 border-2 border-[#F0E2E0] shadow-md relative group/img bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
+                <img
+                  src={member.avatar}
+                  alt={member.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <h4 className="text-base sm:text-lg font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
+                {member.name}
+              </h4>
+              <p className="text-xs sm:text-sm text-[#5A5252] font-body line-clamp-1">
+                {member.role}
+              </p>
+            </div>
+            <div className="mt-2 w-full flex flex-col items-center gap-1.5">
+              <span className={`text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full ${
+                isLeadership
+                  ? "text-[#C9A24B] bg-[#C9A24B]/10 border border-[#C9A24B]/20"
+                  : "text-[#C41E3A] bg-[#FCEAEC]"
+              }`}>
+                {member.department}
+              </span>
+              {isLeadership && (
+                <div className="flex items-center gap-1 text-[10px] text-[#C9A24B] font-semibold">
+                  <Award className="w-3 h-3" />
+                  <span>Executive Director</span>
+                </div>
+              )}
             </div>
           </div>
+        );
+      })}
+    </div>
+  </div>
 
-          {/* Row 2 - Right Scrolling */}
-          <div className="team-marquee-wrapper">
-            <div className="team-marquee-track-right">
-              {(() => {
-                const allTeamMembers = TEAM_DATA.flatMap((group) =>
-                  group.members.map((m) => ({
-                    ...m,
-                    department: group.department,
-                  }))
-                );
-                const midPoint = Math.ceil(allTeamMembers.length / 2);
-                const row2Members = allTeamMembers.slice(midPoint);
-                const duplicatedRow2 = [...row2Members, ...row2Members];
-
-                return duplicatedRow2.map((member, i) => {
-                  const isLeadership = member.department === "Leadership";
-                  return (
-                    <div 
-                      key={`row2-${i}`}
-                      className="reveal-team tilt-small w-[280px] sm:w-[320px] flex-shrink-0 p-6 spotlight-card rounded-2xl border border-border bg-white text-center relative flex flex-col items-center justify-between h-[350px] sm:h-[380px] select-none transition-all duration-300 hover:border-[#C41E3A]/30 hover:shadow-xl cursor-pointer"
-                      onMouseMove={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-                        e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
-                      }}
-                    >
-                      {/* Avatar & Info Content */}
-                      <div className="flex flex-col items-center w-full">
-                        {/* Elegant avatar frame with border and zoom effect */}
-                        <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-4 border-2 border-[#F0E2E0] shadow-md relative group/img bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
-                          <img 
-                            src={member.avatar} 
-                            alt={member.name} 
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
-                            referrerPolicy="no-referrer"
-                          />
-                        </div>
-
-                        {/* Name and Role */}
-                        <h4 className="text-base sm:text-lg font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
-                          {member.name}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-[#5A5252] font-body line-clamp-1">
-                          {member.role}
-                        </p>
-                      </div>
-
-                      {/* Department Badge and Leadership marker */}
-                      <div className="mt-2 w-full flex flex-col items-center gap-1.5">
-                        <span className={`text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full ${
-                          isLeadership
-                            ? "text-[#C9A24B] bg-[#C9A24B]/10 border border-[#C9A24B]/20"
-                            : "text-[#C41E3A] bg-[#FCEAEC]"
-                        }`}>
-                          {member.department}
-                        </span>
-
-                        {isLeadership && (
-                          <div className="flex items-center gap-1 text-[10px] text-[#C9A24B] font-semibold">
-                            <Award className="w-3 h-3" />
-                            <span>Executive Director</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
-            </div>
-          </div>
-
-        </div>
-
-        {/* Interaction Hint */}
-        <div className="reveal mt-12 text-center">
-          <p className="text-xs text-[#5A5252]/60 font-body inline-flex items-center gap-1.5 bg-[#FBF6F5] px-4 py-2 rounded-full border border-[#F0E2E0]">
-            <Sparkles className="w-3.5 h-3.5 text-[#C9A24B] animate-pulse" />
-            Hover over any card to pause scrolling and trigger interactive lighting
-          </p>
-        </div>
-
-      </section>
+  <div className="reveal mt-12 text-center relative z-10">
+    <p className="text-xs text-[#5A5252]/60 font-body inline-flex items-center gap-1.5 bg-[#FBF6F5] px-4 py-2 rounded-full border border-[#F0E2E0]">
+      <Sparkles className="w-3.5 h-3.5 text-[#C9A24B] animate-pulse" />
+      Scroll into view to meet the team
+    </p>
+  </div>
+</section>
 
       {/* Full Team Photo */}
 <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mt-20">
