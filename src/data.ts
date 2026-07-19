@@ -58,7 +58,7 @@ export const TRUST_LOGOS = [
 
 export const STATS_DATA: StatItem[] = [
   { id: "stat-exp", label: "Years of Group Experience", count: 15, suffix: "+" },
-  { id: "stat-brands", label: "Brands in Our Catalog", count: 1000, suffix: "+" },
+  { id: "stat-brands", label: "Brands in Our Catalog", count: 100, suffix: "+" },
   { id: "stat-clients", label: "Enterprise Clients Served", count: 500, suffix: "+" },
   { id: "stat-renewal", label: "Client Renewal Rate", count: 98, suffix: "%" }
 ];
@@ -78,7 +78,7 @@ export const INDUSTRIES_DATA: IndustryItem[] = [
 
 export const PROGRAMS_DATA: ProgramItem[] = [
   { id: "prog-sales", title: "Loyalty management Programs", description: "A Loyalty Management System is a comprehensive platform that helps businesses build stronger relationships with customers, dealers, distributors, retailers, and channel partners through customizable rewards and incentive programs. It enables organizations to launch QR code-based loyalty campaigns, automate point accumulation and redemption, manage tiered reward structures, and offer multiple redemption options such as digital wallets, bank transfers, gift vouchers, or merchandise", emoji: "📈", count: 145, suffix: "%", countLabel: "Average Sales Lift" },
-  { id: "prog-dealer", title: "Dealer distribution Programs", description: "A Dealer Management System (DMS) is a centralized platform designed to simplify and optimize the management of dealers, distributors, retailers, and channel partners. It enables businesses to manage customer networks, streamline primary and secondary order processing, track sales performance, set and monitor sales targets, and automate financial operations such as invoicing, payments, credit notes, and outstanding balances. With real-time dashboards, ERP and accounting software integration, communication tools, and comprehensive analytics, the system improves operational efficiency, enhances dealer engagement, increases sales visibility, and supports data-driven business decisions", emoji: "🤝", count: 185, suffix: "K+", countLabel: "Active Channel Partners" }
+  { id: "prog-dealer", title: "Dealer distribution Programs", description: "A Dealer Management System (DMS) is a centralized platform designed to simplify and optimize the management of dealers, distributors, retailers, and channel partners. It enables businesses to manage customer networks, streamline primary and secondary order processing, track sales performance, set and monitor sales targets, and automate financial operations such as invoicing, payments, credit notes, and outstanding balances. With real-time dashboards, ERP and accounting software integration, communication tools, and comprehensive analytics.", emoji: "🤝", count: 185, suffix: "K+", countLabel: "Active Channel Partners" }
 
 ];
 

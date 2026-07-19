@@ -124,7 +124,6 @@ export default function App() {
     });
 
     let rafId: number;
-    let teamCycleTl: any = null;
     function raf(time: number) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
@@ -507,65 +506,7 @@ export default function App() {
 
       // Team cards: scale pulse on arrival
       // Team cards: continuous stacking "deck" carousel
-const stackCards = gsap.utils.toArray('.reveal-team-stack') as any[];
-if (stackCards.length > 0) {
-  const total = stackCards.length;
 
-  const restState = (depth: number, side: number) => ({
-    x: depth === 0 ? 0 : side * (6 + depth * 4),
-    y: -12 * depth,
-    scale: 1 - 0.04 * depth,
-    rotate: depth === 0 ? 0 : side * (3 + depth * 1.5),
-    opacity: depth === 0 ? 1 : 1 - depth * 0.08
-  });
-
-  gsap.set(stackCards, { opacity: 0, x: 0, y: 90, scale: 0.85, rotate: 0 });
-
-  ScrollTrigger.create({
-    trigger: '.team-stack-wrap',
-    start: 'top 80%',
-    once: true,
-    onEnter: () => {
-      const entrance = gsap.timeline({
-        onComplete: () => {
-          let order = Array.from({ length: total }, (_, d) => (total - 1) - d);
-
-          teamCycleTl = gsap.timeline({ repeat: -1, repeatDelay: 1.6, delay: 1.6 });
-          teamCycleTl.add(() => {
-            const frontIdx = order.shift() as number;
-            order.push(frontIdx);
-
-            order.forEach((cardIdx, depth) => {
-              const card = stackCards[cardIdx];
-              const side = cardIdx % 2 === 0 ? -1 : 1;
-              gsap.set(card, { zIndex: 10 + (total - depth) });
-              gsap.to(card, {
-                ...restState(depth, side),
-                duration: 0.8,
-                ease: depth === 0 ? 'back.out(1.3)' : 'power2.inOut'
-              });
-            });
-          });
-        }
-      });
-
-      stackCards.forEach((card: any, i: number) => {
-        entrance.to(card, {
-          x: 0, y: 0, scale: 1, rotate: 0, opacity: 1,
-          duration: 0.55, ease: 'back.out(1.5)'
-        }, i === 0 ? 0 : '+=0.15');
-
-        const depth = (total - 1) - i;
-        const side = i % 2 === 0 ? -1 : 1;
-        entrance.to(card, {
-          ...restState(depth, side),
-          duration: 0.5,
-          ease: 'power2.inOut'
-        }, '+=0.35');
-      });
-    }
-  });
-}
       // Steps (How It Works / Execution Method): sequential sliding-in animation & continuous floating/breathing
       const stepCardsReveal = document.querySelectorAll('.reveal-step');
       stepCardsReveal.forEach((card, i) => {
@@ -1204,7 +1145,7 @@ if (stackCards.length > 0) {
         </div>
 
         <h3 className="text-3xl font-bold text-[#1A1414] mb-4">
-          GiftsOnClick
+          Gifts-On-Click
         </h3>
 
         <p className="text-[#5A5252] leading-8 mb-8">
@@ -1268,7 +1209,7 @@ if (stackCards.length > 0) {
         </div>
 
         <h3 className="text-3xl font-bold text-[#1A1414] mb-4">
-          RewardsOnClick
+          Rewards-On-Click
         </h3>
 
         <p className="text-[#5A5252] leading-8 mb-8">
@@ -1354,16 +1295,25 @@ if (stackCards.length > 0) {
               Born from GiftsOnClick. Powered for corporate scale.
             </h2>
             <div className="space-y-6 text-[#5A5252] text-base md:text-lg leading-relaxed font-body">
-              <p>
-                Born from <a href="https://www.giftsonclick.in/" target="_blank" rel="noreferrer" className="text-[#C41E3A] font-bold underline hover:text-[#8C1327]">GiftsOnClick</a>, India's leading corporate gifting platform, <strong>RewardsOnClick</strong> was built to address a single, urgent demand from HR, sales, and channel procurement leaders: <span className="text-[#1A1414] font-semibold">immediate, reliable, and digital-first reward fulfillment.</span>
-              </p>
-              <p>
-                While physical gifts have their undeniable charm, today's fast-paced B2B environment demands instant gratification. By combining our 15+ years of corporate experience with robust web portals, we allow enterprises to award points, dispatch brand digital vouchers, and track performance payouts instantly on a secure, customizable system.
-              </p>
-              <p className="italic text-[#C41E3A]">
-                Same customer-first commitment. Same robust vendor backend. Re-engineered for the modern B2B ecosystem.
-              </p>
-            </div>
+  <p>
+    <strong>GiftsOnClick</strong> is India's corporate gifting platform, built to solve a
+    simple problem for HR, sales, and procurement teams:{" "}
+    <span className="text-[#1A1414] font-semibold">
+      finding the right gift, at scale, without the back-and-forth.
+    </span>
+  </p>
+  <p>
+    A great gift is more than something to check off a list — it's a reflection of your
+    brand and how much thought you put into the people you work with. That's why we've
+    built a catalog spanning apparel, drinkware, electronics, bags, personalized items,
+    trophies, and premium gifts from brands like Adidas, Puma, Samsung, Philips, and Jack &
+    Jones — all sourced, curated, and fulfilled through one platform.
+  </p>
+  <p className="italic text-[#C41E3A]">
+    Trusted by teams at HUL, Vodafone Idea, SBI, Mahindra, Asian Paints, and Glenmark for
+    employee recognition, channel incentives, and festive gifting.
+  </p>
+</div>
             
             <div className="mt-8">
               <a 
@@ -1662,67 +1612,59 @@ if (stackCards.length > 0) {
     </p>
   </div>
 
-  <div className="team-stack-wrap relative mx-auto w-[280px] h-[350px] sm:w-[320px] sm:h-[380px] pt-4 z-10">
-    {TEAM_DATA.flatMap((group) =>
-      group.members.map((m) => ({ ...m, department: group.department }))
-    ).map((member, i) => {
-      const isLeadership = member.department === "Leadership";
-      return (
-        <div
-          key={member.name}
-          data-stack-index={i}
-          style={{ zIndex: 10 + i }}
-          className="reveal-team-stack tilt-small spotlight-card absolute inset-0 p-6 rounded-2xl border border-border bg-white text-center flex flex-col items-center justify-between select-none cursor-pointer"
-          onMouseMove={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-            e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
-          }}
-        >
-          <div className="flex flex-col items-center w-full">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-4 border-2 border-[#F0E2E0] shadow-md relative group/img bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
-              <img
-                src={member.avatar}
-                alt={member.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <h4 className="text-base sm:text-lg font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 z-10 relative">
+  {TEAM_DATA.flatMap((group) =>
+    group.members.map((m) => ({ ...m, department: group.department }))
+  ).map((member) => {
+    const isLeadership = member.department === "Leadership";
+    return (
+      <div
+        key={member.name}
+        className="rounded-2xl border border-[#F0E2E0] bg-white text-center flex flex-col items-center justify-between select-none cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-3 overflow-hidden"
+      >
+        <div className="flex flex-col items-center w-full">
+          <div className="w-full aspect-square overflow-hidden border-b border-[#F0E2E0] bg-gradient-to-br from-[#FCEAEC] to-[#FBF6F5]">
+            <img
+              src={member.avatar}
+              alt={member.name}
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          <div className="px-6 pt-5">
+            <h4 className="text-lg sm:text-xl font-bold text-[#1A1414] font-heading mb-1 tracking-tight">
               {member.name}
             </h4>
-            <p className="text-xs sm:text-sm text-[#5A5252] font-body line-clamp-1">
-              {member.role}
-            </p>
-          </div>
-          <div className="mt-2 w-full flex flex-col items-center gap-1.5">
-            <span className={`text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full ${
-              isLeadership
-                ? "text-[#C9A24B] bg-[#C9A24B]/10 border border-[#C9A24B]/20"
-                : "text-[#C41E3A] bg-[#FCEAEC]"
-            }`}>
-              {member.department}
-            </span>
-            {isLeadership && (
-              <div className="flex items-center gap-1 text-[10px] text-[#C9A24B] font-semibold">
-                <Award className="w-3 h-3" />
-                <span>Executive Director</span>
-              </div>
+            {member.name === "Agrim Kalra" ? (
+              <p className="text-base sm:text-lg text-[#8C1327] font-semibold font-body tracking-wide leading-tight">
+                Marketing<br />Head
+              </p>
+            ) : (
+              <p className="text-base sm:text-lg text-[#8C1327] font-semibold font-body line-clamp-1 tracking-wide">
+                {member.role}
+              </p>
             )}
           </div>
         </div>
-      );
-    })}
-  </div>
-
-  <div className="reveal mt-12 text-center relative z-10">
-    <p className="text-xs text-[#5A5252]/60 font-body inline-flex items-center gap-1.5 bg-[#FBF6F5] px-4 py-2 rounded-full border border-[#F0E2E0]">
-      <Sparkles className="w-3.5 h-3.5 text-[#C9A24B] animate-pulse" />
-      Hover the front card to see it tilt and glow
-    </p>
-  </div>
+        <div className="mt-3 mb-8 w-full flex flex-col items-center gap-2">
+          <span className={`text-xs font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm ${
+            isLeadership
+              ? "text-white bg-gradient-to-r from-[#C9A24B] to-[#B8873A] border border-[#C9A24B]/30"
+              : "text-white bg-gradient-to-r from-[#C41E3A] to-[#8C1327] border border-[#C41E3A]/30"
+          }`}>
+            {member.department}
+          </span>
+          {isLeadership && (
+            <div className="flex items-center gap-1.5 text-xs text-[#C9A24B] font-bold tracking-wide">
+              <Award className="w-4 h-4" />
+              <span>Executive Director</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  })}
+</div>
 </section>
 
       {/* Full Team Photo */}
@@ -1850,7 +1792,7 @@ if (stackCards.length > 0) {
                   <div>
                     <h4 className="text-xs font-bold text-[#1A1414] uppercase tracking-wider mb-1 font-sans">HQ Address</h4>
                     <p className="text-sm text-[#5A5252] leading-relaxed font-body">
-                      A SQUARE TECHNOLOGIES, 1511, First Floor, <br />
+                      #1511, First Floor, <br />
                        JLPL Industrial Park, Sector 82,<br />
                       Mohali (Punjab) INDIA 160055
                     </p>
