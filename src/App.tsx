@@ -1794,7 +1794,7 @@ export default function App() {
                     <p className="text-sm text-[#5A5252] leading-relaxed font-body">
                       #1511, First Floor, <br />
                        JLPL Industrial Park, Sector 82,<br />
-                      Mohali (Punjab) INDIA 160055
+                      Mohali (Punjab) INDIA 160055.
                     </p>
                   </div>
                 </div>
